@@ -1,20 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BookItemComponent} from "./BookItemComponent";
 import * as uuid from "uuid";
-import {search} from "../BooksAPI";
+import {getAll, search} from "../BooksAPI";
 import {constants} from "../constants";
 import {Link} from "react-router-dom";
 
 export const SearchComponent = ({
-    listCurrentlyRead,
-    listWTR,
-    listRead,
-    handleCurrentReading,
-    handleWantToRead,
-    handleRead,
+    listBook,
     handleMoveOn
 }) => {
-    const [listSearchItem, setListSearchItem] = useState([]);
+    const [listSearchItem, setListSearchItem] = useState(listBook);
     const [searchText, setSearchText] = useState("");
 
     const render = (listSearchItem) => {
@@ -23,22 +18,20 @@ export const SearchComponent = ({
                 <li key={uuid.v4()}>
                     <BookItemComponent
                         item={e}
-                        handleCurrentReading={handleCurrentReading}
-                        handleWantToRead={handleWantToRead}
-                        handleRead={handleRead}
                         handleMoveOn={handleMoveOn}
-                        type={checkType(e.id)}/>
+                        type={checkType(e.shelf)}/>
                 </li>
             ))
         }
     }
 
-    const checkType = (id) => {
-        if (listCurrentlyRead && listCurrentlyRead.filter(e => e.id === id).length > 0) {
+    const checkType = (shelf) => {
+        console.log("shelf", shelf);
+        if (constants.BOOKSHELF_CURRENT_VALUE === shelf) {
             return constants.BOOKSHELF_CURRENT_VALUE
-        } else if (listWTR && listWTR.filter(e => e.id === id).length > 0) {
+        } else if (constants.BOOKSHELF_WTR_VALUE === shelf) {
             return constants.BOOKSHELF_WTR_VALUE;
-        } else if (listRead && listRead.filter(e => e.id === id).length > 0) {
+        } else if (constants.BOOKSHELF_READ_VALUE === shelf) {
             return constants.BOOKSHELF_READ_VALUE;
         }
     }
@@ -47,6 +40,7 @@ export const SearchComponent = ({
         if (searchText) {
             search(searchText)
             .then(data => {
+                console.log(data);
                 setListSearchItem(data);
             })
             .catch(err => {
@@ -60,7 +54,7 @@ export const SearchComponent = ({
         setSearchText(value);
 
         if (!value || value.trim().length === 0) {
-            setListSearchItem([]);
+            setListSearchItem(listBook);
         } else {
             handleQuerySearch(searchText);
         }

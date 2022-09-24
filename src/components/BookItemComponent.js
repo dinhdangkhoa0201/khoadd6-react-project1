@@ -9,9 +9,6 @@ import {SelectComponent} from "./SelectComponent";
 
 export const BookItemComponent = ({
     item,
-    handleCurrentReading,
-    handleWantToRead,
-    handleRead,
     handleMoveOn,
     type
 }) => {
@@ -29,9 +26,6 @@ export const BookItemComponent = ({
                         backgroundImage: `url(${thumbnail})`
                     }}/>
                 <SelectComponent item={item}
-                                 handleCurrentReading={handleCurrentReading}
-                                 handleWantToRead={handleWantToRead}
-                                 handleRead={handleRead}
                                  handleMoveOn={handleMoveOn}
                                  type={type}/>
             </div>

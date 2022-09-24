@@ -1,6 +1,7 @@
 import React from "react";
 import * as uuid from "uuid";
 import {constants} from "../constants";
+import {update} from "../BooksAPI";
 
 const listOption = [
     {
@@ -28,24 +29,13 @@ const listOption = [
 
 export const SelectComponent = ({
     item,
-    handleCurrentReading,
-    handleWantToRead,
-    handleRead,
     handleMoveOn,
     type
 }) => {
 
     const handleSelect = (value) => {
-        if (!type) {
-            if (constants.BOOKSHELF_CURRENT_VALUE === value) {
-                handleCurrentReading(item);
-            } else if (constants.BOOKSHELF_WTR_VALUE === value) {
-                handleWantToRead(item);
-            } else if (constants.BOOKSHELF_READ_VALUE === value) {
-                handleRead(item);
-            }
-        } else {
-            handleMoveOn(item, type, value);
+        if (value && handleMoveOn) {
+            handleMoveOn(item, value);
         }
     }
 

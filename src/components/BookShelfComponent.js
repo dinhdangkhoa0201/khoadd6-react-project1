@@ -5,9 +5,6 @@ import * as uuid from "uuid";
 export const BookShelfComponent = ({
     bookShelfTitle,
     listItem,
-    handleCurrentReading,
-    handleWantToRead,
-    handlerRead,
     handleMoveOn,
     type
 }) => {
@@ -17,9 +14,6 @@ export const BookShelfComponent = ({
             <li key={uuid.v4()}>
                 <BookItemComponent
                     item={e}
-                    handleCurrentReading={handleCurrentReading}
-                    handleWantToRead={handleWantToRead}
-                    handlerRead={handlerRead}
                     handleMoveOn={handleMoveOn}
                     type={type}/>
             </li>

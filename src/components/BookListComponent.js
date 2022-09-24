@@ -5,14 +5,10 @@ import {constants} from "../constants";
 import {Link} from "react-router-dom";
 
 export const BookListComponent = ({
-    listCurrentlyRead,
-    listWTR,
-    listRead,
-    handleCurrentReading,
-    handleWantToRead,
-    handleRead,
+    listBook,
     handleMoveOn
 }) => {
+
     return (
         <div className="list-books">
             <div className="list-books-title">
@@ -23,30 +19,21 @@ export const BookListComponent = ({
                     <BookShelfComponent
                         key={uuid.v4()}
                         bookShelfTitle={constants.BOOKSHELF_CURRENT_TITLE}
-                        listItem={listCurrentlyRead}
-                        handleCurrentReading={handleCurrentReading}
-                        handleWantToRead={handleWantToRead}
-                        handleRead={handleRead}
+                        listItem={listBook.filter(e => e.shelf === constants.BOOKSHELF_CURRENT_VALUE)}
                         type={constants.BOOKSHELF_CURRENT_VALUE}
                         handleMoveOn={handleMoveOn}/>
 
                     <BookShelfComponent
                         key={uuid.v4()}
                         bookShelfTitle={constants.BOOKSHELF_WTR_TITLE}
-                        listItem={listWTR}
-                        handleCurrentReading={handleCurrentReading}
-                        handleWantToRead={handleWantToRead}
-                        handleRead={handleRead}
+                        listItem={listBook.filter(e => e.shelf === constants.BOOKSHELF_WTR_VALUE)}
                         type={constants.BOOKSHELF_WTR_VALUE}
                         handleMoveOn={handleMoveOn}/>
 
                     <BookShelfComponent
                         key={uuid.v4()}
                         bookShelfTitle={constants.BOOKSHELF_READ_TITLE}
-                        listItem={listRead}
-                        handleCurrentReading={handleCurrentReading}
-                        handleWantToRead={handleWantToRead}
-                        handleRead={handleRead}
+                        listItem={listBook.filter(e => e.shelf === constants.BOOKSHELF_READ_VALUE)}
                         type={constants.BOOKSHELF_READ_VALUE}
                         handleMoveOn={handleMoveOn}/>
                 </div>
