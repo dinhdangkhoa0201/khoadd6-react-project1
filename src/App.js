@@ -24,8 +24,8 @@ export const App = () => {
         })
     }
 
-    const handleMoveOn = (item, newType) => {
-        update(item, newType).then(data => {
+    const handleMoveOn = (book, shelf) => {
+        update(book, shelf).then(data => {
             handleGetAll();
         }).catch(err => {
             console.error(err);
