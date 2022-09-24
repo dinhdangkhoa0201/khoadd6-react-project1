@@ -4,7 +4,7 @@ import {SearchComponent} from "./components/SearchComponent";
 import {BookListComponent} from "./components/BookListComponent";
 import {Routes} from "react-router";
 import {BrowserRouter, Route} from "react-router-dom";
-import {get, getAll, update} from "./BooksAPI";
+import {getAll, update} from "./BooksAPI";
 
 export const App = () => {
 

@@ -1,7 +1,6 @@
 import React from "react";
 import * as uuid from "uuid";
 import {constants} from "../constants";
-import {update} from "../BooksAPI";
 
 const listOption = [
     {

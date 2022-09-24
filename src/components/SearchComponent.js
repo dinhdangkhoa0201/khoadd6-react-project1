@@ -1,16 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {BookItemComponent} from "./BookItemComponent";
 import * as uuid from "uuid";
-import {getAll, search} from "../BooksAPI";
-import {constants} from "../constants";
+import {search} from "../BooksAPI";
 import {Link} from "react-router-dom";
+import {DebounceInput} from "react-debounce-input";
 
 export const SearchComponent = ({
     listBook,
     handleMoveOn
 }) => {
-    const [listSearchItem, setListSearchItem] = useState(listBook);
-    const [searchText, setSearchText] = useState("");
+    const [listSearchItem, setListSearchItem] = useState([]);
 
     const render = (listSearchItem) => {
         if (listSearchItem && listSearchItem.length > 0) {
@@ -19,20 +18,10 @@ export const SearchComponent = ({
                     <BookItemComponent
                         item={e}
                         handleMoveOn={handleMoveOn}
-                        type={checkType(e.shelf)}/>
+                        type={e.shelf}
+                    />
                 </li>
             ))
-        }
-    }
-
-    const checkType = (shelf) => {
-        console.log("shelf", shelf);
-        if (constants.BOOKSHELF_CURRENT_VALUE === shelf) {
-            return constants.BOOKSHELF_CURRENT_VALUE
-        } else if (constants.BOOKSHELF_WTR_VALUE === shelf) {
-            return constants.BOOKSHELF_WTR_VALUE;
-        } else if (constants.BOOKSHELF_READ_VALUE === shelf) {
-            return constants.BOOKSHELF_READ_VALUE;
         }
     }
 
@@ -40,8 +29,12 @@ export const SearchComponent = ({
         if (searchText) {
             search(searchText)
             .then(data => {
-                console.log(data);
-                setListSearchItem(data);
+                const temp = data.map((e) => {
+                    const bookOnShelf = listBook.find((b) => b.id === e.id);
+                    e.shelf = bookOnShelf ? bookOnShelf.shelf : 'none';
+                    return e;
+                })
+                setListSearchItem(temp);
             })
             .catch(err => {
                 setListSearchItem([]);
@@ -51,12 +44,11 @@ export const SearchComponent = ({
 
     const handleSearchText = (event) => {
         const value = event.target.value;
-        setSearchText(value);
 
-        if (!value || value.trim().length === 0) {
-            setListSearchItem(listBook);
+        if (!value) {
+            setListSearchItem([]);
         } else {
-            handleQuerySearch(searchText);
+            handleQuerySearch(value);
         }
     }
 
@@ -69,10 +61,14 @@ export const SearchComponent = ({
                     </button>
                 </Link>
                 <div className="search-books-input-wrapper">
-                    <input type="text"
-                           value={searchText}
-                           placeholder="Search by title or author"
-                           onChange={(event) => handleSearchText(event)}/>
+                    <DebounceInput
+                        minLength={2}
+                        debounceTimeout={325}
+                        element={"input"}
+                        type={"text"}
+                        placeholder="Search by title or author"
+                        onChange={handleSearchText}
+                    />
 
                 </div>
             </div>
